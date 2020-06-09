@@ -592,6 +592,7 @@ client.on('message', async (msg) => {
   cooldowns[authorId] = timeoutUntil;
 });
 
+
 // client.on('change_battery', (batteryInfo) => {
 //   // Battery percentage for attached device has changed
 //   const { battery, plugged } = batteryInfo;
