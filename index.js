@@ -64,7 +64,7 @@ const messages = [
       useMask: 'TAKE CARE, *WEAR MASK* AND *STAY HOME*!',
       about: 'Type *!about* to know more about the bot.',
       welcomeMessage:
-        'Welcome to INFO-19, a chatbot created to spread statistics about *COVID-19* from various countries and states of Brazil. \n\nTo start, type a Brazil state *e.g: !sc or !santa catarina)* or city with its acronym in brackets *(e.g: !city Recife(PE) or !city Moreno(PE)* and if you need a full report from all Brazilian states, type *!all*. \n\nIf you need info from another country, type its name starting with a *!(exclamation)*. \nType *!about* to know more about the chatbot.',
+        'Welcome to INFO-19, a chatbot created to spread statistics about *COVID-19* from various countries and states of Brazil. \n\nTo start, type a Brazil state *e.g: !sc or !santa catarina)* or city with its acronym in brackets *(e.g: !city Recife(PE) or !city Moreno(PE)* and if you need a full report from all Brazilian states, type *!all*. \n\nIf you need info from another country, type its name starting with a *!(exclamation)*. \nType *!about* to know more about the chatbot.\n\nYou can also add me into groups.',
       errorMessage:
         'Sorry, an error happened or the place you typed is not in our database. We are working to fix.',
       notFound:
@@ -73,6 +73,8 @@ const messages = [
         'This bot was developed by *César Nascimento(ncesar.com*) using the public API *covid19-brazil-api.now.sh* for countries and *brasil.io* for brazil states and cities. \n\nDo you wanna learn how to code(in pt-br)? Watch me on YouTube, *youtube.com/ncesar*. Wanna talk with me? *oi@ncesar.com*',
       timeOut:
         'Sorry, you have sent too many messages. Wait 3 seconds to send again.',
+      typeHello:
+        'Type *hi* to receive more instructions about how to use the bot.',
     },
   },
   {
@@ -91,7 +93,7 @@ const messages = [
       useMask: 'PREVINA-SE, *USE MÁSCARA* E *FIQUE EM CASA*!',
       about: 'Digite *!sobre* para saber mais sobre o bot.',
       welcomeMessage:
-        'Bem-vindo ao INFO-19, um robô com objetivo de divulgar dados atualizados sobre o *COVID-19* de vários países e estados do Brasil. \n\nPara iniciar, digite o nome ou sigla de algum estado *ex: !sc ou !santa catarina* ou o nome de alguma cidade brasileira com a sigla do seu estado entre parênteses *ex: !cidade Recife(PE) ou !cidade Moreno(PE)* ou simplesmente digite *!brasil* para um relatório geral. \n\nSe você quiser um relatório de todos os estados do brasil, digite *!todos*. Se você deseja obter informações de um país estrangeiro, digite o nome dele sem acentos, com uma *!(exclamação)* no início e *seguindo o padrão inglês ex: !Uruguay e não Uruguai, !US e não Estados Unidos*. \n\nDigite *!sobre* para saber mais informações do robô.',
+        'Bem-vindo ao INFO-19, um robô com objetivo de divulgar dados atualizados sobre o *COVID-19* de vários países e estados do Brasil. \n\nPara iniciar, digite o nome ou sigla de algum estado *ex: !sc ou !santa catarina* ou o nome de alguma cidade brasileira com a sigla do seu estado entre parênteses *ex: !cidade Recife(PE) ou !cidade Moreno(PE)* ou simplesmente digite *!brasil* para um relatório geral. \n\nSe você quiser um relatório de todos os estados do brasil, digite *!todos*. Se você deseja obter informações de um país estrangeiro, digite o nome dele sem acentos, com uma *!(exclamação)* no início e *seguindo o padrão inglês ex: !Uruguay e não Uruguai, !US e não Estados Unidos*. \n\nDigite *!sobre* para saber mais informações do robô. \n\nSabia que eu também posso ficar em grupos? É só me adicionar e enviar os comandos.',
       errorMessage:
         'Desculpe, algum erro aconteceu ou este local não está no nosso banco de dados. Estamos trabalhando para consertar.',
       notFound:
@@ -100,6 +102,8 @@ const messages = [
         'Esse bot foi desenvolvido por *César Nascimento(ncesar.com*) usando a API pública *covid19-brazil-api.now.sh* para países estrangeiros e *brasil.io* para estados e cidades do Brasil. \n\nQuer aprender a programar? Me assista no YouTube, *youtube.com/ncesar*. Dúvidas, sugestões ou reclamações? *oi@ncesar.com*. *Ajude o bot a continuar no ar, doe qualquer valor pelo picpay para cesar.n*.',
       timeOut:
         'Desculpe mas você enviou muitas mensagens. Aguarde 3 segundos até enviar a próxima.',
+      typeHello:
+        'Digite *olá* para receber mais instruções sobre como utilizar o bot.',
     },
   },
 ];
@@ -306,18 +310,23 @@ const sendSingleCountryInfo = (response, language, locale) => {
   *-------- COVID-19 --------*
   ${language.caseInformations} *${response.country}* ${
     language.updatedAt
-    } ${moment(response.updated_at).format('LLL')}
+  } ${moment(response.updated_at).format('LLL')}
 
-  ${language.confirmedLabel} *${Number(response.confirmed).toLocaleString('pt-br')}*
+  ${language.confirmedLabel} *${Number(response.confirmed).toLocaleString(
+    'pt-br',
+  )}*
   ${language.activeCases} *${Number(response.cases).toLocaleString('pt-br')}*
   ${language.deathsLabel} *${Number(response.deaths).toLocaleString('pt-br')}*
-  ${language.recoveredLabel} *${Number(response.recovered).toLocaleString('pt-br')}*
+  ${language.recoveredLabel} *${Number(response.recovered).toLocaleString(
+    'pt-br',
+  )}*
   ${language.infoProvidedBy} *${locale === 'pt-br' ? 'OMS' : 'WHO'}*
 
   ${language.useMask}
     
   ${language.about}
   
+  ${language.typeHello}
   `;
 };
 
@@ -327,17 +336,22 @@ const sendSingleCityData = (response, language, locale) => {
   *-------- COVID-19 --------*
   ${language.caseInformationsCity} *${response.city}(${response.state})* ${
     language.updatedAt
-    } ${moment(response.date).format('L')}
+  } ${moment(response.date).format('L')}
 
-  ${language.confirmedLabel} *${Number(response.confirmed).toLocaleString('pt-br')}*
+  ${language.confirmedLabel} *${Number(response.confirmed).toLocaleString(
+    'pt-br',
+  )}*
   ${language.deathsLabel} *${Number(response.deaths).toLocaleString('pt-br')}*
-  ${language.estimatedPopulation} *${Number(response.estimated_population_2019).toLocaleString('pt-br')}*
+  ${language.estimatedPopulation} *${Number(
+    response.estimated_population_2019,
+  ).toLocaleString('pt-br')}*
   ${language.infoProvidedBy} *${language.ministryOfHealthAndWho}*
   
   ${language.useMask}
   
   ${language.about}
   
+  ${language.typeHello}
   `;
 };
 
@@ -347,17 +361,22 @@ const sendSingleStateData = (response, language, locale) => {
   *-------- COVID-19 --------*
   ${language.caseInformationsState} *${response.state}* ${
     language.updatedAt
-    } ${moment(response.date).format('L')}
+  } ${moment(response.date).format('L')}
   
-  ${language.confirmedLabel} *${Number(response.confirmed).toLocaleString('pt-br')}*
+  ${language.confirmedLabel} *${Number(response.confirmed).toLocaleString(
+    'pt-br',
+  )}*
   ${language.deathsLabel} *${Number(response.deaths).toLocaleString('pt-br')}*
-  ${language.estimatedPopulation} *${Number(response.estimated_population_2019).toLocaleString('pt-br')}*
+  ${language.estimatedPopulation} *${Number(
+    response.estimated_population_2019,
+  ).toLocaleString('pt-br')}*
   ${language.infoProvidedBy} *${language.ministryOfHealthAndWho}*
   
   ${language.useMask}
   
   ${language.about}
   
+  ${language.typeHello}
   `;
 };
 
@@ -369,11 +388,16 @@ const sendMultipleBrazilianStateInfo = (response, language, locale) => {
     *-------- COVID-19 --------*
     ${language.caseInformationsState} *${response.state}* ${
       language.updatedAt
-      } ${moment(response.date).format('L')}
-    ${language.confirmedLabel} *${Number(response.confirmed).toLocaleString('pt-br')}*
+    } ${moment(response.date).format('L')}
+    ${language.confirmedLabel} *${Number(response.confirmed).toLocaleString(
+      'pt-br',
+    )}*
     ${language.deathsLabel} *${Number(response.deaths).toLocaleString('pt-br')}*
-    ${language.estimatedPopulation} *${Number(response.estimated_population_2019).toLocaleString('pt-br')}*
+    ${language.estimatedPopulation} *${Number(
+      response.estimated_population_2019,
+    ).toLocaleString('pt-br')}*
     ${language.infoProvidedBy} *${language.ministryOfHealthAndWho}*
+    ${language.typeHello}
     *--------------------------*
     `;
   });
@@ -396,6 +420,7 @@ const sendBrazilData = (confirmed, deaths, date, language, locale) => {
   
   ${language.about}
   
+  ${language.typeHello}
   `;
 };
 
@@ -466,7 +491,9 @@ client.on('message', async (msg) => {
   const countriesArray = countries.includes(lowerCaseMsg);
 
   const capitalize = (str, lower = false) =>
-  (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, match => match.toUpperCase());
+    (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, (match) =>
+      match.toUpperCase(),
+    );
 
   const authorId = msg.author || msg.from;
   if (cooldowns[authorId] > new Date()) {
@@ -479,12 +506,24 @@ client.on('message', async (msg) => {
         const placeOnly = msg.body.slice(8);
         const regExp = /\(([^)]+)\)/;
         const stateOnly = regExp.exec(placeOnly)[1].toUpperCase();
-        fetchGeneralData(`state=${stateOnly}&city=${capitalize(placeOnly).replace(/ *\([^)]*\) */g, "")}`, true)
+        fetchGeneralData(
+          `state=${stateOnly}&city=${capitalize(placeOnly).replace(
+            / *\([^)]*\) */g,
+            '',
+          )}`,
+          true,
+        );
       } else if (lowerCaseMsg.startsWith('!city')) {
         const placeOnly = msg.body.slice(6);
         const regExp = /\(([^)]+)\)/;
         const stateOnly = regExp.exec(placeOnly)[1].toUpperCase();
-          fetchGeneralData(`state=${stateOnly}&city=${capitalize(placeOnly).replace(/ *\([^)]*\) */g, "")}`, true)
+        fetchGeneralData(
+          `state=${stateOnly}&city=${capitalize(placeOnly).replace(
+            / *\([^)]*\) */g,
+            '',
+          )}`,
+          true,
+        );
       } else if (lowerCaseMsg == '!todos' || lowerCaseMsg === '!all') {
         fetchGeneralData('place_type=state', false, false);
       } else if (stateAcronymsArray) {
@@ -565,7 +604,14 @@ client.on('message', async (msg) => {
       } else {
         msg.reply(language.notFound);
       }
-    } else {
+    } else if (
+      lowerCaseMsg === 'oi' ||
+      lowerCaseMsg === 'olá' ||
+      lowerCaseMsg === 'ola' ||
+      lowerCaseMsg === 'hi' ||
+      lowerCaseMsg === '!ola' ||
+      lowerCaseMsg === '!olá'
+    ) {
       msg.reply(language.welcomeMessage);
     }
   }
