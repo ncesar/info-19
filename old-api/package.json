@@ -1,0 +1,29 @@
+{
+  "name": "covidzap",
+  "version": "1.0.0",
+  "description": "COVIDZap é um bot criado em Javascript para informar casos atualizados do COVID-19",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "covid19",
+    "whatsapp",
+    "bot"
+  ],
+  "author": "César Nascimento - ncesar.com",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "moment": "^2.26.0",
+    "nodemon": "^2.0.4",
+    "puppeteer": "^3.2.0",
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "^1.6.1"
+  }
+}
