@@ -91,7 +91,7 @@ const messages = [
       useMask: 'PREVINA-SE, *USE MÁSCARA* E *FIQUE EM CASA*!',
       about: 'Digite *!sobre* para saber mais sobre o bot.',
       welcomeMessage:
-        'Bem-vindo ao INFO-19, um robô com objetivo de divulgar dados atualizados sobre o *COVID-19* de vários países e estados do Brasil. \n\nPara iniciar, digite o nome ou sigla de algum estado *ex: !sc ou !santa catarina* ou o nome de alguma cidade brasileira com a sigla do seu estado entre parênteses *ex: !cidade Recife(PE) ou !cidade Moreno(PE)* ou simplesmente digite *!brasil* para um relatório geral. \nSe você quiser um relatório de todos os estados do brasil, digite *!todos*. Se você deseja obter informações de um país estrangeiro, digite o nome dele sem acentos, com uma *!(exclamação)* no início e *seguindo o padrão inglês ex: !Uruguay e não Uruguai, !US e não Estados Unidos*. \n\nDigite *!sobre* para saber mais informações do robô.',
+        'Bem-vindo ao INFO-19, um robô com objetivo de divulgar dados atualizados sobre o *COVID-19* de vários países e estados do Brasil. \n\nPara iniciar, digite o nome ou sigla de algum estado *ex: !sc ou !santa catarina* ou o nome de alguma cidade brasileira com a sigla do seu estado entre parênteses *ex: !cidade Recife(PE) ou !cidade Moreno(PE)* ou simplesmente digite *!brasil* para um relatório geral. \n\nSe você quiser um relatório de todos os estados do brasil, digite *!todos*. Se você deseja obter informações de um país estrangeiro, digite o nome dele sem acentos, com uma *!(exclamação)* no início e *seguindo o padrão inglês ex: !Uruguay e não Uruguai, !US e não Estados Unidos*. \n\nDigite *!sobre* para saber mais informações do robô.',
       errorMessage:
         'Desculpe, algum erro aconteceu ou este local não está no nosso banco de dados. Estamos trabalhando para consertar.',
       notFound:
@@ -465,6 +465,9 @@ client.on('message', async (msg) => {
   const stateAcronymsArray = states.includes(lowerCaseMsg);
   const countriesArray = countries.includes(lowerCaseMsg);
 
+  const capitalize = (str, lower = false) =>
+  (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, match => match.toUpperCase());
+
   const authorId = msg.author || msg.from;
   if (cooldowns[authorId] > new Date()) {
     msg.reply(language.timeOut);
@@ -476,16 +479,12 @@ client.on('message', async (msg) => {
         const placeOnly = msg.body.slice(8);
         const regExp = /\(([^)]+)\)/;
         const stateOnly = regExp.exec(placeOnly)[1].toUpperCase();
-        const placeToUpperCase =
-          placeOnly[0].toUpperCase() + placeOnly.substring(1).replace(/ *\([^)]*\) */g, "");
-        fetchGeneralData(`state=${stateOnly}&city=${placeToUpperCase}`, true)
+        fetchGeneralData(`state=${stateOnly}&city=${capitalize(placeOnly).replace(/ *\([^)]*\) */g, "")}`, true)
       } else if (lowerCaseMsg.startsWith('!city')) {
         const placeOnly = msg.body.slice(6);
         const regExp = /\(([^)]+)\)/;
         const stateOnly = regExp.exec(placeOnly)[1].toUpperCase();
-        const placeToUpperCase =
-          placeOnly[0].toUpperCase() + placeOnly.substring(1).replace(/ *\([^)]*\) */g, "");
-        fetchGeneralData(`state=${stateOnly}&city=${placeToUpperCase}`, true)
+          fetchGeneralData(`state=${stateOnly}&city=${capitalize(placeOnly).replace(/ *\([^)]*\) */g, "")}`, true)
       } else if (lowerCaseMsg == '!todos' || lowerCaseMsg === '!all') {
         fetchGeneralData('place_type=state', false, false);
       } else if (stateAcronymsArray) {
