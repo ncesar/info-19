@@ -60,11 +60,11 @@ const messages = [
       estimatedPopulation: 'Estimated population:',
       recoveredLabel: 'Recovered:',
       infoProvidedBy: 'Data provided by',
-      ministryOfHealthAndWho: 'Brasil.io API',
+      ministryOfHealthAndWho: 'State Health Secretary(Brasil.io API)',
       useMask: 'TAKE CARE, *WEAR MASK* AND *STAY HOME*!',
       about: 'Type *!about* to know more about the bot.',
       welcomeMessage:
-        'Welcome to INFO-19, a chatbot created to spread statistics about *COVID-19* from various countries and states of Brazil. \n\nTo start, type a Brazil state or city starting with a *!(exclamation)* and if you need a full report from all Brazilian states, type *!all*. \n\nIf you need info from another country, type its name starting with a *!(exclamation)*. \nType *!about* to know more about the chatbot and *!invite* to invite me to a group.',
+        'Welcome to INFO-19, a chatbot created to spread statistics about *COVID-19* from various countries and states of Brazil. \n\nTo start, type a Brazil state or city starting with a *!(exclamation)* and if you need a full report from all Brazilian states, type *!all*. \n\nIf you need info from another country, type its name starting with a *!(exclamation)*. \nType *!about* to know more about the chatbot.',
       errorMessage:
         'Sorry, an error happened or the place you typed is not in our database. We are working to fix.',
       notFound:
@@ -87,11 +87,11 @@ const messages = [
       estimatedPopulation: 'População estipulada:',
       recoveredLabel: 'Recuperados:',
       infoProvidedBy: 'Informações fornecidas por',
-      ministryOfHealthAndWho: 'Brasil.io API',
+      ministryOfHealthAndWho: 'Secretaria da Saúde do Estado(Brasil.io API)',
       useMask: 'PREVINA-SE, *USE MÁSCARA* E *FIQUE EM CASA*!',
       about: 'Digite *!sobre* para saber mais sobre o bot.',
       welcomeMessage:
-        'Bem-vindo ao INFO-19, um robô com objetivo de divulgar dados atualizados sobre o *COVID-19* de vários países e estados do Brasil. \n\nPara iniciar, digite o nome ou sigla de algum estado ou o nome de alguma cidade brasileira com um *!(exclamação)* na frente ou simplesmente digite *!brasil* para um relatório geral. \nSe você quiser um relatório de todos os estados do brasil, digite *!todos*. Se você deseja obter informações de um país estrangeiro, digite o nome dele sem acentos, com uma *!(exclamação)* no início e *seguindo o padrão inglês(!Uruguay e não Uruguai, !US e não Estados Unidos)*. \n\nDigite *!sobre* para saber mais informações do robô e *!convite* para me convidar para algum grupo.',
+        'Bem-vindo ao INFO-19, um robô com objetivo de divulgar dados atualizados sobre o *COVID-19* de vários países e estados do Brasil. \n\nPara iniciar, digite o nome ou sigla de algum estado ou o nome de alguma cidade brasileira com um *!(exclamação)* na frente ou simplesmente digite *!brasil* para um relatório geral. \nSe você quiser um relatório de todos os estados do brasil, digite *!todos*. Se você deseja obter informações de um país estrangeiro, digite o nome dele sem acentos, com uma *!(exclamação)* no início e *seguindo o padrão inglês(!Uruguay e não Uruguai, !US e não Estados Unidos)*. \n\nDigite *!sobre* para saber mais informações do robô.',
       errorMessage:
         'Desculpe, algum erro aconteceu ou este local não está no nosso banco de dados. Estamos trabalhando para consertar.',
       notFound:
@@ -562,23 +562,6 @@ client.on('message', async (msg) => {
         fetchGeneralData('state=TO&place_type=state', false, true);
       } else if (lowerCaseMsg === '!sobre' || lowerCaseMsg === '!about') {
         msg.reply(language.aboutMessage);
-      } else if (msg.body == '!leave') {
-        // Leave the group
-        let chat = await msg.getChat();
-        if (chat.isGroup) {
-          chat.leave();
-        } else {
-          msg.reply('This command can only be used in a group!');
-        }
-      } else if (msg.body.startsWith('!join ')) {
-        // entra em grupo
-        const inviteCode = msg.body.split(' ')[1];
-        try {
-          await client.acceptInvite(inviteCode);
-          msg.reply('Joined the group!');
-        } catch (e) {
-          msg.reply('That invite code seems to be invalid.');
-        }
       } else {
         msg.reply(language.notFound);
       }
@@ -591,7 +574,6 @@ client.on('message', async (msg) => {
   timeoutUntil.setSeconds(timeoutUntil.getSeconds() + 10); // wont be able to use for 10 seconds
   cooldowns[authorId] = timeoutUntil;
 });
-
 
 // client.on('change_battery', (batteryInfo) => {
 //   // Battery percentage for attached device has changed
