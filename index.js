@@ -95,7 +95,7 @@ const messages = [
       errorMessage:
         'Desculpe, algum erro aconteceu ou este local não está no nosso banco de dados. Estamos trabalhando para consertar.',
       notFound:
-        'Desculpe, não entendi o que você deseja ou não encontrei a palavra-chave que você pesquisou',
+        'Desculpe, não entendi o que você deseja ou não encontrei a palavra-chave que você pesquisou.',
       aboutMessage:
         'Esse bot foi desenvolvido por *César Nascimento(ncesar.com*) usando a API pública *covid19-brazil-api.now.sh* para países estrangeiros e *brasil.io* para estados e cidades do Brasil. \n\nQuer aprender a programar? Me assista no YouTube, *youtube.com/ncesar*. Dúvidas, sugestões ou reclamações? *oi@ncesar.com*. *Ajude o bot a continuar no ar, doe qualquer valor pelo picpay para cesar.n*.',
       timeOut:
