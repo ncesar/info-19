@@ -505,7 +505,10 @@ client.on('message', async (msg) => {
       } else if (lowerCaseMsg.startsWith('!cidade')) {
         const placeOnly = msg.body.slice(8);
         const regExp = /\(([^)]+)\)/;
-        const stateOnly = regExp.exec(placeOnly)[1].toUpperCase();
+        const stateOnly =
+          regExp.exec(placeOnly) !== null
+            ? regExp.exec(placeOnly)[1].toUpperCase()
+            : '';
         fetchGeneralData(
           `state=${stateOnly}&city=${capitalize(placeOnly).replace(
             / *\([^)]*\) */g,
@@ -516,7 +519,10 @@ client.on('message', async (msg) => {
       } else if (lowerCaseMsg.startsWith('!city')) {
         const placeOnly = msg.body.slice(6);
         const regExp = /\(([^)]+)\)/;
-        const stateOnly = regExp.exec(placeOnly)[1].toUpperCase();
+        const stateOnly =
+          regExp.exec(placeOnly) !== null
+            ? regExp.exec(placeOnly)[1].toUpperCase()
+            : '';
         fetchGeneralData(
           `state=${stateOnly}&city=${capitalize(placeOnly).replace(
             / *\([^)]*\) */g,
