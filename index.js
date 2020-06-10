@@ -95,7 +95,7 @@ const messages = [
       welcomeMessage:
         'Bem-vindo ao INFO-19, um robô com objetivo de divulgar dados atualizados sobre o *COVID-19* de vários países e estados do Brasil. \n\nPara iniciar, digite o nome ou sigla de algum estado *ex: !sc ou !santa catarina* ou o nome de alguma cidade brasileira com a sigla do seu estado entre parênteses *ex: !cidade Recife(PE) ou !cidade Moreno(PE)* ou simplesmente digite *!brasil* para um relatório geral. \n\nSe você quiser um relatório de todos os estados do brasil, digite *!todos*. Se você deseja obter informações de um país estrangeiro, digite o nome dele sem acentos, com uma *!(exclamação)* no início e *seguindo o padrão inglês ex: !Uruguay e não Uruguai, !US e não Estados Unidos*. \n\nDigite *!sobre* para saber mais informações do robô. \n\nSabia que eu também posso ficar em grupos? É só me adicionar e enviar os comandos.',
       errorMessage:
-        'Desculpe, algum erro aconteceu ou este local não está no nosso banco de dados. Estamos trabalhando para consertar.',
+        'Desculpe, algum erro aconteceu ou este local não está no nosso banco de dados. Lembre-se: para cidades, digite o nome e se necessário a sigla, ex: *!cidade Recife ou !cidade Moreno(PE)*, para estados digite *!sp ou !são paulo*, para relatório geral do brasil, digite *!brasil*, para relatório de todos os estados, digite *!todos* e para países, digite o nome em inglês, ex: *!netherlands, !uruguay*.',
       notFound:
         'Desculpe, não entendi o que você deseja ou não encontrei a palavra-chave que você pesquisou.',
       aboutMessage:
