@@ -313,24 +313,12 @@ const sendSingleCountryInfo = (response, language, locale) => {
   } ${moment(response.updated_at).format('LLL')}
 
   ${language.confirmedLabel} *${Number(response.confirmed).toLocaleString(
-    'pt-BR', {
-      minimumFractionDigits: 2,  
-      maximumFractionDigits: 2
-    }
+    'pt-BR',
   )}*
-  ${language.activeCases} *${Number(response.cases).toLocaleString('pt-BR', {
-    minimumFractionDigits: 2,  
-    maximumFractionDigits: 2
-  })}*
-  ${language.deathsLabel} *${Number(response.deaths).toLocaleString('pt-BR', {
-    minimumFractionDigits: 2,  
-    maximumFractionDigits: 2
-  })}*
+  ${language.activeCases} *${Number(response.cases).toLocaleString('pt-BR')}*
+  ${language.deathsLabel} *${Number(response.deaths).toLocaleString('pt-BR')}*
   ${language.recoveredLabel} *${Number(response.recovered).toLocaleString(
-    'pt-BR', {
-      minimumFractionDigits: 2,  
-      maximumFractionDigits: 2
-    }
+    'pt-BR',
   )}*
   ${language.infoProvidedBy} *${locale === 'pt-br' ? 'OMS' : 'WHO'}*
 
@@ -351,21 +339,12 @@ const sendSingleCityData = (response, language, locale) => {
   } ${moment(response.date).format('L')}
 
   ${language.confirmedLabel} *${Number(response.confirmed).toLocaleString(
-    'pt-BR', {
-      minimumFractionDigits: 2,  
-      maximumFractionDigits: 2
-    }
+    'pt-BR',
   )}*
-  ${language.deathsLabel} *${Number(response.deaths).toLocaleString('pt-BR', {
-    minimumFractionDigits: 2,  
-    maximumFractionDigits: 2
-  })}*
+  ${language.deathsLabel} *${Number(response.deaths).toLocaleString('pt-BR')}*
   ${language.estimatedPopulation} *${Number(
     response.estimated_population_2019,
-  ).toLocaleString('pt-BR', {
-    minimumFractionDigits: 2,  
-    maximumFractionDigits: 2
-  })}*
+  ).toLocaleString('pt-BR')}*
   ${language.infoProvidedBy} *${language.ministryOfHealthAndWho}*
   
   ${language.useMask}
@@ -385,21 +364,12 @@ const sendSingleStateData = (response, language, locale) => {
   } ${moment(response.date).format('L')}
   
   ${language.confirmedLabel} *${Number(response.confirmed).toLocaleString(
-    'pt-BR', {
-      minimumFractionDigits: 2,  
-      maximumFractionDigits: 2
-    }
+    'pt-BR',
   )}*
-  ${language.deathsLabel} *${Number(response.deaths).toLocaleString('pt-BR', {
-    minimumFractionDigits: 2,  
-    maximumFractionDigits: 2
-  })}*
+  ${language.deathsLabel} *${Number(response.deaths).toLocaleString('pt-BR')}*
   ${language.estimatedPopulation} *${Number(
     response.estimated_population_2019,
-  ).toLocaleString('pt-BR', {
-    minimumFractionDigits: 2,  
-    maximumFractionDigits: 2
-  })}*
+  ).toLocaleString('pt-BR')}*
   ${language.infoProvidedBy} *${language.ministryOfHealthAndWho}*
   
   ${language.useMask}
@@ -420,21 +390,12 @@ const sendMultipleBrazilianStateInfo = (response, language, locale) => {
       language.updatedAt
     } ${moment(response.date).format('L')}
     ${language.confirmedLabel} *${Number(response.confirmed).toLocaleString(
-      'pt-BR', {
-        minimumFractionDigits: 2,  
-        maximumFractionDigits: 2
-      }
+      'pt-BR',
     )}*
-    ${language.deathsLabel} *${Number(response.deaths).toLocaleString('pt-BR', {
-      minimumFractionDigits: 2,  
-      maximumFractionDigits: 2
-    })}*
+    ${language.deathsLabel} *${Number(response.deaths).toLocaleString('pt-BR')}*
     ${language.estimatedPopulation} *${Number(
       response.estimated_population_2019,
-    ).toLocaleString('pt-BR', {
-      minimumFractionDigits: 2,  
-      maximumFractionDigits: 2
-    })}*
+    ).toLocaleString('pt-BR')}*
     ${language.infoProvidedBy} *${language.ministryOfHealthAndWho}*
     ${language.typeHello}
     *--------------------------*
@@ -451,14 +412,8 @@ const sendBrazilData = (confirmed, deaths, date, language, locale) => {
     date,
   ).format('L')}
   
-  ${language.confirmedLabel} *${Number(confirmed).toLocaleString('pt-BR', {
-    minimumFractionDigits: 2,  
-    maximumFractionDigits: 2
-  })}*
-  ${language.deathsLabel} *${Number(deaths).toLocaleString('pt-BR', {
-    minimumFractionDigits: 2,  
-    maximumFractionDigits: 2
-  })}*
+  ${language.confirmedLabel} *${Number(confirmed).toLocaleString('pt-BR')}*
+  ${language.deathsLabel} *${Number(deaths).toLocaleString('pt-BR')}*
   ${language.infoProvidedBy} *${language.ministryOfHealthAndWho}*
   
   ${language.useMask}
