@@ -494,6 +494,18 @@ client.on('message', async (msg) => {
     (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, (match) =>
       match.toUpperCase(),
     );
+  function checkWord(word, str) {
+    const allowedSeparator = '\\\s,;"\'|';
+
+    const regex = new RegExp(
+      `(^.*[${allowedSeparator}]${word}$)|(^${word}[${allowedSeparator}].*)|(^${word}$)|(^.*[${allowedSeparator}]${word}[${allowedSeparator}].*$)`,
+
+      // Case insensitive
+      'i',
+    );
+
+    return regex.test(str);
+  }  
 
   const authorId = msg.author || msg.from;
   if (cooldowns[authorId] > new Date()) {
@@ -503,19 +515,75 @@ client.on('message', async (msg) => {
       if (countriesArray) {
         fetchCountryData(lowerCaseMsg.slice(1));
       } else if (lowerCaseMsg.startsWith('!cidade')) {
+        // if lowercasemsg contains dos de da do das
+        const wordsToLowerCase = ['Dos', 'De', 'Da', 'Do', 'Das']
+        // ele pegava algum desses
+        // setava
         const placeOnly = msg.body.slice(8);
         const regExp = /\(([^)]+)\)/;
         const stateOnly =
           regExp.exec(placeOnly) !== null
             ? regExp.exec(placeOnly)[1].toUpperCase()
             : '';
-        fetchGeneralData(
-          `state=${stateOnly}&city=${capitalize(placeOnly).replace(
-            / *\([^)]*\) */g,
-            '',
-          )}`,
-          true,
+        const capitalizedPlaceOnly =  capitalize(placeOnly).replace(
+          / *\([^)]*\) */g,
+          '',
         );
+        // to-do https://stackoverflow.com/questions/55163348/how-to-check-if-a-string-contains-a-word-in-javascript
+        if(checkWord(wordsToLowerCase, capitalizedPlaceOnly)) {
+          let modifiedPlaceName;
+          console.log('went here2')
+          switch (capitalizedPlaceOnly) {
+            case checkWord(capitalizedPlaceOnly, wordsToLowerCase[0]):
+              console.log('went here')
+              modifiedPlaceName.replace(wordsToLowerCase[0], 'dos');
+              fetchGeneralData(
+                `state=${stateOnly}&city=${modifiedPlaceName}`,
+                true,
+              );
+              break;
+            case checkWord(capitalizedPlaceOnly, wordsToLowerCase[1]):
+              modifiedPlaceName.replace(wordsToLowerCase[1], 'de');
+              fetchGeneralData(
+                `state=${stateOnly}&city=${modifiedPlaceName}`,
+                true,
+              );
+              break;
+            case checkWord(capitalizedPlaceOnly, wordsToLowerCase[2]):
+              modifiedPlaceName.replace(wordsToLowerCase[2], 'da');
+              fetchGeneralData(
+                `state=${stateOnly}&city=${modifiedPlaceName}`,
+                true,
+              );
+              break;  
+            case checkWord(capitalizedPlaceOnly, wordsToLowerCase[3]):
+              modifiedPlaceName.replace(wordsToLowerCase[3], 'do');
+              fetchGeneralData(
+                `state=${stateOnly}&city=${modifiedPlaceName}`,
+                true,
+              );
+              break;  
+            case checkWord(capitalizedPlaceOnly, wordsToLowerCase[4]):    
+              modifiedPlaceName.replace(wordsToLowerCase[4], 'das');
+              fetchGeneralData(
+                `state=${stateOnly}&city=${modifiedPlaceName}`,
+                true,
+              );
+              break;
+            default:
+              fetchGeneralData(
+                `state=${stateOnly}&city=${capitalizedPlaceOnly}`,
+                true,
+              );
+              break;
+          }   
+        } else {
+          console.log('went here3')
+          fetchGeneralData(
+            `state=${stateOnly}&city=${capitalizedPlaceOnly}`,
+            true,
+          );
+        }
       } else if (lowerCaseMsg.startsWith('!city')) {
         const placeOnly = msg.body.slice(6);
         const regExp = /\(([^)]+)\)/;
