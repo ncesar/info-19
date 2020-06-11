@@ -508,10 +508,10 @@ client.on('message', async (msg) => {
   }
 
   const authorId = msg.author || msg.from;
-  if (cooldowns[authorId] > new Date()) {
-    msg.reply(language.timeOut);
-  } else {
-    if (msg.body.startsWith('!')) {
+  if (msg.body.startsWith('!')) {
+    if (cooldowns[authorId] > new Date()) {
+      msg.reply(language.timeOut);
+    } else {
       if (countriesArray) {
         fetchCountryData(lowerCaseMsg.slice(1));
       } else if (lowerCaseMsg.startsWith('!cidade')) {
@@ -628,17 +628,17 @@ client.on('message', async (msg) => {
       } else {
         msg.reply(language.notFound);
       }
-    } else if (
-      lowerCaseMsg === 'oi' ||
-      lowerCaseMsg === 'olá' ||
-      lowerCaseMsg === 'ola' ||
-      lowerCaseMsg === 'oi!' ||
-      lowerCaseMsg === 'hi' ||
-      lowerCaseMsg === '!ola' ||
-      lowerCaseMsg === '!olá'
-    ) {
-      msg.reply(language.welcomeMessage);
     }
+  } else if (
+    lowerCaseMsg === 'oi' ||
+    lowerCaseMsg === 'olá' ||
+    lowerCaseMsg === 'ola' ||
+    lowerCaseMsg === 'oi!' ||
+    lowerCaseMsg === 'hi' ||
+    lowerCaseMsg === '!ola' ||
+    lowerCaseMsg === '!olá'
+  ) {
+    msg.reply(language.welcomeMessage);
   }
 
   let timeoutUntil = new Date();
