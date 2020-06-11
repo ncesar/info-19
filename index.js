@@ -64,7 +64,7 @@ const messages = [
       useMask: 'TAKE CARE, *WEAR MASK* AND *STAY HOME*!',
       about: 'Type *!about* to know more about the bot.',
       welcomeMessage:
-        'Welcome to INFO-19, a chatbot created to spread statistics about *COVID-19* from various countries and states of Brazil. \n\nTo start, type starting with a *!* a Brazilian state *e.g: !sc or !santa catarina* or city with its acronym in brackets if needed *e.g: !city Recife or !city Moreno(PE)* and if you need a full report from all Brazilian states, type *!all*. \n\nIf you need info from another country, type its name starting with a *!(exclamation)*. \nType *!about* to know more about the chatbot.\n\nYou can also add me into groups.',
+        'Welcome to INFO-19, a chatbot created to spread statistics about *COVID-19* from various countries and states of Brazil. \n\nTo start, type starting with *!* a Brazilian state *e.g: !sc or !santa catarina* or city with its acronym in brackets if needed *e.g: !city Recife or !city Moreno(PE)* and if you need a full report from all Brazilian states, type *!all*. \n\nIf you need info from another country, type its name starting with a *!(exclamation)*. \nType *!about* to know more about the chatbot.\n\nYou can also add me into groups.',
       errorMessage:
         'Sorry, an error happened or the place you typed is not in our database. We are working to fix.',
       notFound:
