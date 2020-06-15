@@ -415,6 +415,8 @@ const sendBrazilData = (confirmed, deaths, date, language, locale) => {
   ${language.confirmedLabel} *${Number(confirmed).toLocaleString('pt-BR')}*
   ${language.deathsLabel} *${Number(deaths).toLocaleString('pt-BR')}*
   ${language.infoProvidedBy} *${language.ministryOfHealthAndWho}*
+
+  A quantidade de casos confirmados ontem(data formatada) era: casos. Isso é um crescimento de % comparado aos casos atuais
   
   ${language.useMask}
   
@@ -423,6 +425,13 @@ const sendBrazilData = (confirmed, deaths, date, language, locale) => {
   ${language.typeHello}
   `;
 };
+
+const calculatePercentageData = (confirmedCases, death) => {
+  //fazer um get na api passando o dayBefore como data
+  moment.locale(locale);
+  const dayBefore = new Date(new Date().setDate(new Date().getDate()-1))
+  return `A quantidade de casos confirmados ontem(${dayBefore}) era: casos. Isso é um crescimento de % comparado aos casos atuais`;
+}
 
 let cooldowns = {};
 
