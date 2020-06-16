@@ -576,6 +576,11 @@ client.on('message', async (msg) => {
           '',
         );
         // shitty workaround since the api is case-sensitive and i cant rely on the user to type exactly the capitalized city name
+        // modifyWordsOptions.some(function(curr, index, arr) { another option using some.
+        //   if (curr === ' Dos ') {
+        //       return true;
+        //   }
+        //   }); // returns true
         const modifyWordsOptions = [' Dos ', ' Do ', ' De ', ' Da ', ' Das '];
         if (capitalizedPlaceOnly.includes(modifyWordsOptions[0])) {
           const removedUpperCase = capitalizedPlaceOnly.replace(
