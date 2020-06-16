@@ -416,8 +416,6 @@ const sendBrazilData = (confirmed, deaths, date, language, locale) => {
   ${language.deathsLabel} *${Number(deaths).toLocaleString('pt-BR')}*
   ${language.infoProvidedBy} *${language.ministryOfHealthAndWho}*
 
-  A quantidade de casos confirmados ontem(data formatada) era: casos. Isso é um crescimento de % comparado aos casos atuais
-  
   ${language.useMask}
   
   ${language.about}
