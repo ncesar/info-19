@@ -359,9 +359,9 @@ const calculatePercentageData = (
             confirmedCases - dayBeforeResponse.confirmed
           })*. 
   Isso é um crescimento de *${confirmedPercentage}%* comparado ao dia anterior.`
-        : `Não houve aumento de casos confirmados entre *${moment(
+        : `Não houve aumento de *casos confirmados* entre *${moment(
             dayBefore,
-          ).format('L')}* e *${actualDate}*. Que bom!!`
+          ).format('L')}* e *${actualDate}*.`
     }
  
   ${
@@ -374,9 +374,9 @@ const calculatePercentageData = (
           deaths - dayBeforeResponse.deaths
         })*. 
   Isso é um crescimento de *${deathsPercentage}%* comparado ao dia anterior.`
-      : `Não houve aumento de mortes entre *${moment(dayBefore).format(
+      : `Não houve aumento de *mortes* entre *${moment(dayBefore).format(
           'L',
-        )}* e *${actualDate}*. Que bom!!`
+        )}* e *${actualDate}*.`
   }
   `;
   }
