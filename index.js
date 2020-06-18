@@ -310,16 +310,16 @@ const sendSingleCountryInfo = (response, language, locale) => {
   *-------- COVID-19 --------*
   ${language.caseInformations} *${response.country}* ${
     language.updatedAt
-  } ${moment(response.updated_at).format('LLL')}
+    } ${moment(response.updated_at).format('LLL')}
 
   ${language.confirmedLabel} *${Number(response.confirmed).toLocaleString(
-    'pt-BR',
-  )}*
+      'pt-BR',
+    )}*
   ${language.activeCases} *${Number(response.cases).toLocaleString('pt-BR')}*
   ${language.deathsLabel} *${Number(response.deaths).toLocaleString('pt-BR')}*
   ${language.recoveredLabel} *${Number(response.recovered).toLocaleString(
-    'pt-BR',
-  )}*
+      'pt-BR',
+    )}*
   ${language.infoProvidedBy} *${locale === 'pt-br' ? 'OMS' : 'WHO'}*
 
   ${language.useMask}
@@ -330,23 +330,46 @@ const sendSingleCountryInfo = (response, language, locale) => {
   `;
 };
 
-const sendSingleCityData = (response, language, locale) => {
+
+const calculatePercentageData = async (confirmedCases, deaths, today, param, locale) => {
+  //fazer um get na api passando o dayBefore como data
   moment.locale(locale);
+  // axios.get by date dayBefore
+  try {
+    const dayBefore = new Date(new Date().setDate(new Date().getDate() - 1));
+    const res = await axios.get(
+      `https://brasil.io/api/dataset/covid19/caso/data?${param}&date=${moment(dayBefore).format('YYYY-MM-DD')}`,
+      )
+    if(moment(dayBefore).format('L') !== today){
+      const confirmedPercentage = parseFloat(((confirmedCases - res.data.results[0].confirmed) / res.data.results[0].confirmed) * 100).toFixed(3);
+      const deathsPercentage = parseFloat(((deaths - res.data.results[0].deaths) / res.data.results[0].deaths) * 100).toFixed(3);
+      console.log(`A quantidade de casos confirmados ontem(${moment(dayBefore).format('L')}) era: ${res.data.results[0].confirmed}. Hoje(${today}) a quantidade é de: ${confirmedCases}. Isso é um crescimento de ${confirmedPercentage}% comparado ao dia anterior.
+          A quantidade de mortes ontem (${moment(dayBefore).format('L')}) era: ${res.data.results[0].deaths}. Hoje(${today}) a quantidade é de: ${deaths}. Isso é um crescimento de ${deathsPercentage}% comparado ao dia anterior.`);
+    }
+  } catch (error) {
+    console.log('erro', error)
+  }
+}
+
+const sendSingleCityData = (response, language, locale, param) => {
+  moment.locale(locale);
+  // ${calculatePercentageData(response.confirmed, response.deaths, moment(response.date).format('L'), param, locale)}
   return `
   *-------- COVID-19 --------*
   ${language.caseInformationsCity} *${response.city}(${response.state})* ${
     language.updatedAt
-  } ${moment(response.date).format('L')}
+    } ${moment(response.date).format('L')}
 
   ${language.confirmedLabel} *${Number(response.confirmed).toLocaleString(
-    'pt-BR',
-  )}*
+      'pt-BR',
+    )}*
   ${language.deathsLabel} *${Number(response.deaths).toLocaleString('pt-BR')}*
   ${language.estimatedPopulation} *${Number(
-    response.estimated_population_2019,
-  ).toLocaleString('pt-BR')}*
+      response.estimated_population_2019,
+    ).toLocaleString('pt-BR')}*
   ${language.infoProvidedBy} *${language.ministryOfHealthAndWho}*
   
+
   ${language.useMask}
   
   ${language.about}
@@ -361,15 +384,15 @@ const sendSingleStateData = (response, language, locale) => {
   *-------- COVID-19 --------*
   ${language.caseInformationsState} *${response.state}* ${
     language.updatedAt
-  } ${moment(response.date).format('L')}
+    } ${moment(response.date).format('L')}
   
   ${language.confirmedLabel} *${Number(response.confirmed).toLocaleString(
-    'pt-BR',
-  )}*
+      'pt-BR',
+    )}*
   ${language.deathsLabel} *${Number(response.deaths).toLocaleString('pt-BR')}*
   ${language.estimatedPopulation} *${Number(
-    response.estimated_population_2019,
-  ).toLocaleString('pt-BR')}*
+      response.estimated_population_2019,
+    ).toLocaleString('pt-BR')}*
   ${language.infoProvidedBy} *${language.ministryOfHealthAndWho}*
   
   ${language.useMask}
@@ -388,14 +411,14 @@ const sendMultipleBrazilianStateInfo = (response, language, locale) => {
     *-------- COVID-19 --------*
     ${language.caseInformationsState} *${response.state}* ${
       language.updatedAt
-    } ${moment(response.date).format('L')}
+      } ${moment(response.date).format('L')}
     ${language.confirmedLabel} *${Number(response.confirmed).toLocaleString(
-      'pt-BR',
-    )}*
+        'pt-BR',
+      )}*
     ${language.deathsLabel} *${Number(response.deaths).toLocaleString('pt-BR')}*
     ${language.estimatedPopulation} *${Number(
-      response.estimated_population_2019,
-    ).toLocaleString('pt-BR')}*
+        response.estimated_population_2019,
+      ).toLocaleString('pt-BR')}*
     ${language.infoProvidedBy} *${language.ministryOfHealthAndWho}*
     ${language.typeHello}
     *--------------------------*
@@ -416,6 +439,8 @@ const sendBrazilData = (confirmed, deaths, date, language, locale) => {
   ${language.deathsLabel} *${Number(deaths).toLocaleString('pt-BR')}*
   ${language.infoProvidedBy} *${language.ministryOfHealthAndWho}*
 
+  
+
   ${language.useMask}
   
   ${language.about}
@@ -424,12 +449,6 @@ const sendBrazilData = (confirmed, deaths, date, language, locale) => {
   `;
 };
 
-const calculatePercentageData = (confirmedCases, death) => {
-  //fazer um get na api passando o dayBefore como data
-  moment.locale(locale);
-  const dayBefore = new Date(new Date().setDate(new Date().getDate()-1))
-  return `A quantidade de casos confirmados ontem(${dayBefore}) era: casos. Isso é um crescimento de % comparado aos casos atuais`;
-}
 
 let cooldowns = {};
 
@@ -459,7 +478,7 @@ client.on('message', async (msg) => {
       );
       if (isCityOnly) {
         msg.reply(
-          sendSingleCityData(res.data.results[0], language, momentLocale),
+          sendSingleCityData(res.data.results[0], language, momentLocale, param),
         );
       } else if (isStateOnly) {
         msg.reply(
