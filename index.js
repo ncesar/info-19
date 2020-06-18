@@ -350,14 +350,14 @@ const calculatePercentageData = (
     ).toFixed(2);
     return `
     ${
-      confirmedPercentage > 0.0
+      confirmedPercentage > 0
         ? `A quantidade de *casos confirmados* 2 dias atrás *(${moment(
             dayBefore,
           ).format('L')})* era: *${
             dayBeforeResponse.confirmed
           }*. No relatório disponibilizado na data *(${actualDate})* a quantidade é de: *${confirmedCases}(+${
             confirmedCases - dayBeforeResponse.confirmed
-          })*. 
+          } novos casos)*. 
   Isso é um crescimento de *${confirmedPercentage}%* comparado ao dia anterior.`
         : `Não houve aumento de *casos confirmados* entre *${moment(
             dayBefore,
@@ -365,14 +365,14 @@ const calculatePercentageData = (
     }
  
   ${
-    deathsPercentage > 0.0
+    deathsPercentage > 0
       ? `A quantidade de *mortes* 2 dias atrás *(${moment(dayBefore).format(
           'L',
         )})* era: *${
           dayBeforeResponse.deaths
         }*. No relatório disponibilizado na data *(${actualDate})* a quantidade é de: *${deaths}(+${
           deaths - dayBeforeResponse.deaths
-        })*. 
+        } novas mortes)*. 
   Isso é um crescimento de *${deathsPercentage}%* comparado ao dia anterior.`
       : `Não houve aumento de *mortes* entre *${moment(dayBefore).format(
           'L',
@@ -468,7 +468,19 @@ const sendMultipleBrazilianStateInfo = (response, language, locale) => {
   return result;
 };
 
-const sendBrazilData = (confirmed, deaths, date, language, locale) => {
+const sendBrazilData = (
+  confirmed,
+  deaths,
+  date,
+  language,
+  locale,
+  previousConfirmed,
+  previousDeaths,
+) => {
+  const dayBeforeResponse = {
+    confirmed: previousConfirmed,
+    deaths: previousDeaths,
+  };
   moment.locale(locale);
   return `
   *-------- COVID-19 --------*
@@ -479,9 +491,13 @@ const sendBrazilData = (confirmed, deaths, date, language, locale) => {
   ${language.confirmedLabel} *${Number(confirmed).toLocaleString('pt-BR')}*
   ${language.deathsLabel} *${Number(deaths).toLocaleString('pt-BR')}*
   ${language.infoProvidedBy} *${language.ministryOfHealthAndWho}*
-
-  
-
+  ${calculatePercentageData(
+    confirmed,
+    deaths,
+    moment(date).format('L'),
+    dayBeforeResponse,
+    locale,
+  )}
   ${language.useMask}
   
   ${language.about}
@@ -551,8 +567,24 @@ client.on('message', async (msg) => {
           0,
         );
         const date = res.data.results[20].date;
+        const previousConfirmed = getPreviousData.data.results.reduce(
+          (prev, curr) => prev + curr.confirmed,
+          0,
+        );
+        const previousDeaths = getPreviousData.data.results.reduce(
+          (prev, curr) => prev + curr.deaths,
+          0,
+        );
         msg.reply(
-          sendBrazilData(confirmed, deaths, date, language, momentLocale),
+          sendBrazilData(
+            confirmed,
+            deaths,
+            date,
+            language,
+            momentLocale,
+            previousConfirmed,
+            previousDeaths,
+          ),
         );
       } else {
         msg.reply(
@@ -576,18 +608,6 @@ client.on('message', async (msg) => {
     (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, (match) =>
       match.toUpperCase(),
     );
-  function checkWord(word, str) {
-    const allowedSeparator = '\\s,;"\'|';
-
-    const regex = new RegExp(
-      `(^.*[${allowedSeparator}]${word}$)|(^${word}[${allowedSeparator}].*)|(^${word}$)|(^.*[${allowedSeparator}]${word}[${allowedSeparator}].*$)`,
-
-      // Case insensitive
-      'i',
-    );
-
-    return regex.test(str);
-  }
 
   const authorId = msg.author || msg.from;
   if (msg.body.startsWith('!')) {
