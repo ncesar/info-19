@@ -352,11 +352,11 @@ const calculatePercentageData = (
     return `
     ${
       confirmedPercentage > 0
-        ? `A quantidade de *casos confirmados* 2 dias atrás *(${moment(
+        ? `A quantidade de *casos confirmados* 2 dias atrás *${moment(
             dayBefore,
-          ).format('L')})* era: *${dayBeforeResponse.confirmed.toLocaleString(
+          ).format('L')}* era: *${dayBeforeResponse.confirmed.toLocaleString(
             'pt-br',
-          )}*. No relatório disponibilizado na data *(${actualDate})* a quantidade é de: *${confirmedCases.toLocaleString(
+          )}*. No relatório disponibilizado na data *${actualDate}* a quantidade é de: *${confirmedCases.toLocaleString(
             'pt-br',
           )}(+${(confirmedCases - dayBeforeResponse.confirmed).toLocaleString(
             'pt-br',
@@ -364,16 +364,16 @@ const calculatePercentageData = (
   Isso é um crescimento de *${confirmedPercentage}%* comparado ao dia anterior.`
         : `Não houve aumento de *casos confirmados* entre *${moment(
             dayBefore,
-          ).format('L')}* e *${actualDate}*.`
+          ).format('L')}* e *${actualDate}* ou os dados ainda não foram atualizados.`
     }
  
   ${
     deathsPercentage > 0
-      ? `A quantidade de *mortes* 2 dias atrás *(${moment(dayBefore).format(
+      ? `A quantidade de *mortes* 2 dias atrás *${moment(dayBefore).format(
           'L',
-        )})* era: *${dayBeforeResponse.deaths.toLocaleString(
+        )}* era: *${dayBeforeResponse.deaths.toLocaleString(
           'pt-br',
-        )}*. No relatório disponibilizado na data *(${actualDate})* a quantidade é de: *${deaths.toLocaleString(
+        )}*. No relatório disponibilizado na data *${actualDate}* a quantidade é de: *${deaths.toLocaleString(
           'pt-br',
         )}(+${(deaths - dayBeforeResponse.deaths).toLocaleString(
           'pt-br',
@@ -381,7 +381,7 @@ const calculatePercentageData = (
   Isso é um crescimento de *${deathsPercentage}%* comparado ao dia anterior.`
       : `Não houve aumento de *mortes* entre *${moment(dayBefore).format(
           'L',
-        )}* e *${actualDate}*.`
+        )}* e *${actualDate}* ou os dados ainda não foram atualizados.`
   }
   `;
   }
