@@ -363,7 +363,7 @@ const calculatePercentageData = (
   Isso é um crescimento de *${confirmedPercentage}%* comparado ao dia anterior.`
         : `Não houve aumento de *casos confirmados* entre *${moment(
             dayBefore,
-          ).format('L')}* e *${actualDate}*.`
+          ).format('L')}* e *${actualDate}* ou os dados ainda não foram atualizados.`
     }
  
   ${
@@ -380,7 +380,7 @@ const calculatePercentageData = (
   Isso é um crescimento de *${deathsPercentage}%* comparado ao dia anterior.`
       : `Não houve aumento de *mortes* entre *${moment(dayBefore).format(
           'L',
-        )}* e *${actualDate}*.`
+        )}* e *${actualDate}* ou os dados ainda não foram atualizados.`
   }
   `;
   }
