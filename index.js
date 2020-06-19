@@ -353,11 +353,13 @@ const calculatePercentageData = (
       confirmedPercentage > 0
         ? `A quantidade de *casos confirmados* 2 dias atrás *(${moment(
             dayBefore,
-          ).format('L')})* era: *${
-            dayBeforeResponse.confirmed
-          }*. No relatório disponibilizado na data *(${actualDate})* a quantidade é de: *${confirmedCases}(+${
-            confirmedCases - dayBeforeResponse.confirmed
-          } novos casos)*. 
+          ).format('L')})* era: *${dayBeforeResponse.confirmed.toLocaleString(
+            'pt-br',
+          )}*. No relatório disponibilizado na data *(${actualDate})* a quantidade é de: *${confirmedCases.toLocaleString(
+            'pt-br',
+          )}(+${(confirmedCases - dayBeforeResponse.confirmed).toLocaleString(
+            'pt-br',
+          )} novos casos)*. 
   Isso é um crescimento de *${confirmedPercentage}%* comparado ao dia anterior.`
         : `Não houve aumento de *casos confirmados* entre *${moment(
             dayBefore,
@@ -368,11 +370,13 @@ const calculatePercentageData = (
     deathsPercentage > 0
       ? `A quantidade de *mortes* 2 dias atrás *(${moment(dayBefore).format(
           'L',
-        )})* era: *${
-          dayBeforeResponse.deaths
-        }*. No relatório disponibilizado na data *(${actualDate})* a quantidade é de: *${deaths}(+${
-          deaths - dayBeforeResponse.deaths
-        } novas mortes)*. 
+        )})* era: *${dayBeforeResponse.deaths.toLocaleString(
+          'pt-br',
+        )}*. No relatório disponibilizado na data *(${actualDate})* a quantidade é de: *${deaths.toLocaleString(
+          'pt-br',
+        )}(+${(deaths - dayBeforeResponse.deaths).toLocaleString(
+          'pt-br',
+        )} novas mortes)*. 
   Isso é um crescimento de *${deathsPercentage}%* comparado ao dia anterior.`
       : `Não houve aumento de *mortes* entre *${moment(dayBefore).format(
           'L',
