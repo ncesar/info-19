@@ -65,7 +65,7 @@ const messages = [
       useMask: 'TAKE CARE, *WEAR MASK* AND *STAY HOME*!',
       about: 'Type *!about* to know more about the bot.',
       welcomeMessage:
-        'Welcome to INFO-19, a chatbot created to spread statistics about *COVID-19* from various countries and states of Brazil. \n\nTo start, type starting with *!* a Brazilian state *e.g: !sc or !santa catarina* or city with its acronym in brackets if needed *e.g: !city Recife or !city Moreno(PE)* and if you need a full report from all Brazilian states, type *!all*. \n\nIf you need info from another country, type its name starting with a *!(exclamation)*. \nType *!about* to know more about the chatbot.\n\nYou can also add me into groups.',
+        'Welcome to INFO-19, a chatbot created to spread statistics about *COVID-19* from various countries and states of Brazil. \n\nTo start, type starting with *!* a Brazilian state *e.g: !sc or !santa catarina* or city with its acronym in brackets if needed *e.g: !city Recife or !city Moreno(PE)* and if you need a full report from all Brazilian states, type *!all*. \n\nIf you need info from another country, type its name starting with a *!(exclamation)*. \nType *!about* to know more about the chatbot.',
       errorMessage:
         'Sorry, an error happened or the place you typed is not in our database. We are working to fix.',
       notFound:
@@ -94,11 +94,11 @@ const messages = [
       useMask: 'PREVINA-SE, *USE MÁSCARA* E *FIQUE EM CASA*!',
       about: 'Digite *!sobre* para saber mais sobre o bot.',
       welcomeMessage:
-        'Bem-vindo ao INFO-19, um robô com objetivo de divulgar dados atualizados sobre o *COVID-19* de vários países, cidades e estados do Brasil. \n\nPara iniciar, digite o nome ou sigla de algum estado *ex: !sc ou !santa catarina* ou o nome de alguma cidade brasileira com a sigla do seu estado entre parênteses, caso seja necessária *ex: !cidade Recife ou !cidade Moreno(PE)* ou simplesmente digite *!brasil* para um relatório geral. \n\nSe você quiser um relatório de todos os estados do brasil, digite *!todos*. Se você deseja obter informações de um país estrangeiro, digite o nome dele sem acentos, com uma *!(exclamação)* no início e *seguindo o padrão inglês ex: !Uruguay e não Uruguai, !US e não Estados Unidos*. \n\nDigite *!sobre* para saber mais informações do robô. \n\nSabia que eu também posso ficar em grupos? É só me adicionar e enviar os comandos.',
+        'Bem-vindo ao INFO-19, um robô com objetivo de divulgar dados atualizados sobre o *COVID-19* de vários países, cidades e estados do Brasil. \n\nPara iniciar, digite o nome ou sigla de algum estado *ex: !sc ou !santa catarina* ou o nome de alguma cidade brasileira com a sigla do seu estado entre parênteses, caso seja necessária *ex: !cidade Recife ou !cidade Moreno(PE)* ou simplesmente digite *!brasil* para um relatório geral. \n\nSe você quiser um relatório de todos os estados do brasil, digite *!todos*. Se você deseja obter informações de um país estrangeiro, digite o nome dele sem acentos, com uma *!(exclamação)* no início e *seguindo o padrão inglês ex: !Uruguay e não Uruguai, !US e não Estados Unidos*. \n\nDigite *!sobre* para saber mais informações do robô.',
       errorMessage:
         'Desculpe, algum erro aconteceu ou este local não está no nosso banco de dados. \n\nLembre-se: para cidades, digite o nome *SEMPRE INICIANDO COM EXCLAMAÇÃO*, respeitando as palavras maiusculas e minúsculas *(ex: Cabo de Santo Agostinho e não cabo de santo agostinho)* e se necessário a sigla, ex: *!cidade Recife ou !cidade Moreno(PE)*, para estados digite *!sp ou !são paulo*, para relatório geral do brasil, digite *!brasil*, para relatório de todos os estados, digite *!todos* e para países, digite o nome em inglês, ex: *!netherlands, !uruguay*.',
       notFound:
-        'Desculpe, não entendi o que você deseja ou não encontrei a palavra-chave que você pesquisou. \n\nLembre-se: para cidades, digite o nome *SEMPRE INICIANDO COM EXCLAMAÇÃO* e se necessário a sigla, ex: *!cidade Recife ou !cidade Moreno(PE)*, para estados digite *!sp ou !são paulo*, para relatório geral do brasil, digite *!brasil*, para relatório de todos os estados, digite *!todos* e para países, digite o nome em inglês, ex: *!netherlands, !uruguay*.',
+        'Desculpe, não entendi o que você deseja ou não encontrei a palavra-chave que você pesquisou, digite *olá* para receber mais instruções. \n\nLembre-se: para cidades, digite o nome *SEMPRE INICIANDO COM EXCLAMAÇÃO* e se necessário a sigla, ex: *!cidade Recife ou !cidade Moreno(PE)*, para estados digite *!sp ou !são paulo*, para relatório geral do brasil, digite *!brasil*, para relatório de todos os estados, digite *!todos* e para países, digite o nome em inglês, ex: *!netherlands, !uruguay*.',
       aboutMessage:
         'Esse bot foi desenvolvido por *César Nascimento(ncesar.com*) usando a API pública *covid19-brazil-api.now.sh* para países estrangeiros e *brasil.io* para estados e cidades do Brasil. \n\nQuer aprender a programar? Me assista no YouTube, *youtube.com/ncesar*. Dúvidas, sugestões ou reclamações? *oi@ncesar.com*. *Ajude o bot a continuar no ar, doe qualquer valor pelo picpay para cesar.n*.',
       timeOut:
@@ -364,7 +364,9 @@ const calculatePercentageData = (
   Isso é um crescimento de *${confirmedPercentage}%* comparado ao dia anterior.`
         : `Não houve aumento de *casos confirmados* entre *${moment(
             dayBefore,
-          ).format('L')}* e *${actualDate}* ou os dados ainda não foram atualizados.`
+          ).format(
+            'L',
+          )}* e *${actualDate}* ou os dados ainda não foram atualizados.`
     }
  
   ${
@@ -615,207 +617,202 @@ client.on('message', async (msg) => {
     );
 
   const authorId = msg.author || msg.from;
-  if (msg.body.startsWith('!')) {
-    if (cooldowns[authorId] > new Date()) {
-      msg.reply(language.timeOut);
-    } else {
-      if (countriesArray) {
-        fetchCountryData(lowerCaseMsg.slice(1));
-      } else if (lowerCaseMsg.startsWith('!cidade')) {
-        // remover o uppercase em cada palavra e deixar so na primeira
-        const placeOnly = msg.body.slice(8);
-        const regExp = /\(([^)]+)\)/;
-        const stateOnly =
-          regExp.exec(placeOnly) !== null
-            ? regExp.exec(placeOnly)[1].toUpperCase()
-            : '';
-        const capitalizedPlaceOnly = capitalize(placeOnly).replace(
-          / *\([^)]*\) */g,
-          '',
+  if (cooldowns[authorId] > new Date()) {
+    msg.reply(language.timeOut);
+  } else {
+    if (countriesArray) {
+      fetchCountryData(lowerCaseMsg.slice(1));
+    } else if (lowerCaseMsg.startsWith('!cidade')) {
+      // remover o uppercase em cada palavra e deixar so na primeira
+      const placeOnly = msg.body.slice(8);
+      const regExp = /\(([^)]+)\)/;
+      const stateOnly =
+        regExp.exec(placeOnly) !== null
+          ? regExp.exec(placeOnly)[1].toUpperCase()
+          : '';
+      const capitalizedPlaceOnly = capitalize(placeOnly).replace(
+        / *\([^)]*\) */g,
+        '',
+      );
+      // shitty workaround since the api is not case-sensitive and i cant rely on the user to type exactly the capitalized city name
+      const modifyWordsOptions = [' Dos ', ' Do ', ' De ', ' Da ', ' Das '];
+      if (capitalizedPlaceOnly.includes(modifyWordsOptions[0])) {
+        const removedUpperCase = capitalizedPlaceOnly.replace(
+          modifyWordsOptions[0],
+          ' dos ',
         );
-        // shitty workaround since the api is not case-sensitive and i cant rely on the user to type exactly the capitalized city name
-        const modifyWordsOptions = [' Dos ', ' Do ', ' De ', ' Da ', ' Das '];
-        if (capitalizedPlaceOnly.includes(modifyWordsOptions[0])) {
-          const removedUpperCase = capitalizedPlaceOnly.replace(
-            modifyWordsOptions[0],
-            ' dos ',
-          );
-          fetchGeneralData(`state=${stateOnly}&city=${removedUpperCase}`, true);
-        } else if (capitalizedPlaceOnly.includes(modifyWordsOptions[1])) {
-          const removedUpperCase = capitalizedPlaceOnly.replace(
-            modifyWordsOptions[1],
-            ' do ',
-          );
-          fetchGeneralData(`state=${stateOnly}&city=${removedUpperCase}`, true);
-        } else if (capitalizedPlaceOnly.includes(modifyWordsOptions[2])) {
-          const removedUpperCase = capitalizedPlaceOnly.replace(
-            modifyWordsOptions[2],
-            ' de ',
-          );
-          fetchGeneralData(`state=${stateOnly}&city=${removedUpperCase}`, true);
-        } else if (capitalizedPlaceOnly.includes(modifyWordsOptions[3])) {
-          const removedUpperCase = capitalizedPlaceOnly.replace(
-            modifyWordsOptions[3],
-            ' da ',
-          );
-          fetchGeneralData(`state=${stateOnly}&city=${removedUpperCase}`, true);
-        } else if (capitalizedPlaceOnly.includes(modifyWordsOptions[4])) {
-          const removedUpperCase = capitalizedPlaceOnly.replace(
-            modifyWordsOptions[4],
-            ' das ',
-          );
-          fetchGeneralData(`state=${stateOnly}&city=${removedUpperCase}`, true);
-        } else {
-          fetchGeneralData(
-            `state=${stateOnly}&city=${capitalizedPlaceOnly}`,
-            true,
-          );
-        }
-      } else if (lowerCaseMsg.startsWith('!city')) {
-        const placeOnly = msg.body.slice(6);
-        const regExp = /\(([^)]+)\)/;
-        const stateOnly =
-          regExp.exec(placeOnly) !== null
-            ? regExp.exec(placeOnly)[1].toUpperCase()
-            : '';
-        const capitalizedPlaceOnly = capitalize(placeOnly).replace(
-          / *\([^)]*\) */g,
-          '',
+        fetchGeneralData(`state=${stateOnly}&city=${removedUpperCase}`, true);
+      } else if (capitalizedPlaceOnly.includes(modifyWordsOptions[1])) {
+        const removedUpperCase = capitalizedPlaceOnly.replace(
+          modifyWordsOptions[1],
+          ' do ',
         );
-        // shitty workaround since the api is case-sensitive and i cant rely on the user to type exactly the capitalized city name
-        // modifyWordsOptions.some(function(curr, index, arr) { another option using some.
-        //   if (curr === ' Dos ') {
-        //       return true;
-        //   }
-        //   }); // returns true
-        const modifyWordsOptions = [' Dos ', ' Do ', ' De ', ' Da ', ' Das '];
-        if (capitalizedPlaceOnly.includes(modifyWordsOptions[0])) {
-          const removedUpperCase = capitalizedPlaceOnly.replace(
-            modifyWordsOptions[0],
-            ' dos ',
-          );
-          fetchGeneralData(`state=${stateOnly}&city=${removedUpperCase}`, true);
-        } else if (capitalizedPlaceOnly.includes(modifyWordsOptions[1])) {
-          const removedUpperCase = capitalizedPlaceOnly.replace(
-            modifyWordsOptions[1],
-            ' do ',
-          );
-          fetchGeneralData(`state=${stateOnly}&city=${removedUpperCase}`, true);
-        } else if (capitalizedPlaceOnly.includes(modifyWordsOptions[2])) {
-          const removedUpperCase = capitalizedPlaceOnly.replace(
-            modifyWordsOptions[2],
-            ' de ',
-          );
-          fetchGeneralData(`state=${stateOnly}&city=${removedUpperCase}`, true);
-        } else if (capitalizedPlaceOnly.includes(modifyWordsOptions[3])) {
-          const removedUpperCase = capitalizedPlaceOnly.replace(
-            modifyWordsOptions[3],
-            ' da ',
-          );
-          fetchGeneralData(`state=${stateOnly}&city=${removedUpperCase}`, true);
-        } else if (capitalizedPlaceOnly.includes(modifyWordsOptions[4])) {
-          const removedUpperCase = capitalizedPlaceOnly.replace(
-            modifyWordsOptions[4],
-            ' das ',
-          );
-          fetchGeneralData(`state=${stateOnly}&city=${removedUpperCase}`, true);
-        } else {
-          fetchGeneralData(
-            `state=${stateOnly}&city=${capitalizedPlaceOnly}`,
-            true,
-          );
-        }
-      } else if (lowerCaseMsg == '!todos' || lowerCaseMsg === '!all') {
-        fetchGeneralData('place_type=state', false, false);
-      } else if (stateAcronymsArray) {
-        const formattedStateMessage = msg.body.slice(1).toUpperCase();
+        fetchGeneralData(`state=${stateOnly}&city=${removedUpperCase}`, true);
+      } else if (capitalizedPlaceOnly.includes(modifyWordsOptions[2])) {
+        const removedUpperCase = capitalizedPlaceOnly.replace(
+          modifyWordsOptions[2],
+          ' de ',
+        );
+        fetchGeneralData(`state=${stateOnly}&city=${removedUpperCase}`, true);
+      } else if (capitalizedPlaceOnly.includes(modifyWordsOptions[3])) {
+        const removedUpperCase = capitalizedPlaceOnly.replace(
+          modifyWordsOptions[3],
+          ' da ',
+        );
+        fetchGeneralData(`state=${stateOnly}&city=${removedUpperCase}`, true);
+      } else if (capitalizedPlaceOnly.includes(modifyWordsOptions[4])) {
+        const removedUpperCase = capitalizedPlaceOnly.replace(
+          modifyWordsOptions[4],
+          ' das ',
+        );
+        fetchGeneralData(`state=${stateOnly}&city=${removedUpperCase}`, true);
+      } else {
         fetchGeneralData(
-          `state=${formattedStateMessage}&place_type=state`,
-          false,
+          `state=${stateOnly}&city=${capitalizedPlaceOnly}`,
           true,
         );
-      } else if (lowerCaseMsg === '!brasil' || lowerCaseMsg === '!brazil') {
-        fetchGeneralData('place_type=state', false, false, true);
-      } else if (lowerCaseMsg === '!acre' || lowerCaseMsg === '!acré') {
-        fetchGeneralData('state=AC&place_type=state', false, true);
-      } else if (lowerCaseMsg === '!alagoas') {
-        fetchGeneralData('state=AL&place_type=state', false, true);
-      } else if (lowerCaseMsg === '!amapá' || lowerCaseMsg === '!amapa') {
-        fetchGeneralData('state=AP&place_type=state', false, true);
-      } else if (lowerCaseMsg === '!amazonas') {
-        fetchGeneralData('state=AM&place_type=state', false, true);
-      } else if (lowerCaseMsg === '!bahia') {
-        fetchGeneralData('state=BH&place_type=state', false, true);
-      } else if (lowerCaseMsg === '!ceará' || lowerCaseMsg === '!ceara') {
-        fetchGeneralData('state=CE&place_type=state', false, true);
-      } else if (
-        lowerCaseMsg === '!brasilia' ||
-        lowerCaseMsg === '!brasília' ||
-        lowerCaseMsg === '!distrito federal'
-      ) {
-        fetchGeneralData('state=DF&place_type=state', false, true);
-      } else if (
-        lowerCaseMsg === '!espírito santo' ||
-        lowerCaseMsg === '!espirito santo'
-      ) {
-        fetchGeneralData('state=ES&place_type=state', false, true);
-      } else if (lowerCaseMsg === '!goiás' || lowerCaseMsg === '!goias') {
-        fetchGeneralData('state=GO&place_type=state', false, true);
-      } else if (lowerCaseMsg === '!maranhão' || lowerCaseMsg === '!maranhao') {
-        fetchGeneralData('state=MA&place_type=state', false, true);
-      } else if (lowerCaseMsg === '!mato grosso') {
-        fetchGeneralData('state=MT&place_type=state', false, true);
-      } else if (lowerCaseMsg === '!mato grosso do sul') {
-        fetchGeneralData('state=MS&place_type=state', false, true);
-      } else if (lowerCaseMsg === '!minas gerais') {
-        fetchGeneralData('state=MG&place_type=state', false, true);
-      } else if (lowerCaseMsg === '!pará' || lowerCaseMsg === '!para') {
-        fetchGeneralData('state=PA&place_type=state', false, true);
-      } else if (lowerCaseMsg === '!paraíba' || lowerCaseMsg === '!paraiba') {
-        fetchGeneralData('state=PB&place_type=state', false, true);
-      } else if (lowerCaseMsg === '!paraná' || lowerCaseMsg === '!parana') {
-        fetchGeneralData('state=PR&place_type=state', false, true);
-      } else if (lowerCaseMsg === '!pernambuco') {
-        fetchGeneralData('state=PE&place_type=state', false, true);
-      } else if (lowerCaseMsg === '!piaui' || lowerCaseMsg === '!piauí') {
-        fetchGeneralData('state=PI&place_type=state', false, true);
-      } else if (lowerCaseMsg === '!rio de janeiro') {
-        fetchGeneralData('state=RJ&place_type=state', false, true);
-      } else if (lowerCaseMsg === '!rio grande do norte') {
-        fetchGeneralData('state=RN&place_type=state', false, true);
-      } else if (lowerCaseMsg === '!rio grande do sul') {
-        fetchGeneralData('state=RS&place_type=state', false, true);
-      } else if (lowerCaseMsg === '!rondônia' || lowerCaseMsg === '!rondonia') {
-        fetchGeneralData('state=RO&place_type=state', false, true);
-      } else if (lowerCaseMsg === '!roraima') {
-        fetchGeneralData('state=RR&place_type=state', false, true);
-      } else if (lowerCaseMsg === '!santa catarina') {
-        fetchGeneralData('state=SC&place_type=state', false, true);
-      } else if (
-        lowerCaseMsg === '!são paulo' ||
-        lowerCaseMsg === '!sao paulo'
-      ) {
-        fetchGeneralData('state=SP&place_type=state', false, true);
-      } else if (lowerCaseMsg === '!sergipe') {
-        fetchGeneralData('state=SE&place_type=state', false, true);
-      } else if (lowerCaseMsg === '!tocantins') {
-        fetchGeneralData('state=TO&place_type=state', false, true);
-      } else if (lowerCaseMsg === '!sobre' || lowerCaseMsg === '!about') {
-        msg.reply(language.aboutMessage);
-      } else {
-        msg.reply(language.notFound);
       }
+    } else if (lowerCaseMsg.startsWith('!city')) {
+      const placeOnly = msg.body.slice(6);
+      const regExp = /\(([^)]+)\)/;
+      const stateOnly =
+        regExp.exec(placeOnly) !== null
+          ? regExp.exec(placeOnly)[1].toUpperCase()
+          : '';
+      const capitalizedPlaceOnly = capitalize(placeOnly).replace(
+        / *\([^)]*\) */g,
+        '',
+      );
+      // shitty workaround since the api is case-sensitive and i cant rely on the user to type exactly the capitalized city name
+      // modifyWordsOptions.some(function(curr, index, arr) { another option using some.
+      //   if (curr === ' Dos ') {
+      //       return true;
+      //   }
+      //   }); // returns true
+      const modifyWordsOptions = [' Dos ', ' Do ', ' De ', ' Da ', ' Das '];
+      if (capitalizedPlaceOnly.includes(modifyWordsOptions[0])) {
+        const removedUpperCase = capitalizedPlaceOnly.replace(
+          modifyWordsOptions[0],
+          ' dos ',
+        );
+        fetchGeneralData(`state=${stateOnly}&city=${removedUpperCase}`, true);
+      } else if (capitalizedPlaceOnly.includes(modifyWordsOptions[1])) {
+        const removedUpperCase = capitalizedPlaceOnly.replace(
+          modifyWordsOptions[1],
+          ' do ',
+        );
+        fetchGeneralData(`state=${stateOnly}&city=${removedUpperCase}`, true);
+      } else if (capitalizedPlaceOnly.includes(modifyWordsOptions[2])) {
+        const removedUpperCase = capitalizedPlaceOnly.replace(
+          modifyWordsOptions[2],
+          ' de ',
+        );
+        fetchGeneralData(`state=${stateOnly}&city=${removedUpperCase}`, true);
+      } else if (capitalizedPlaceOnly.includes(modifyWordsOptions[3])) {
+        const removedUpperCase = capitalizedPlaceOnly.replace(
+          modifyWordsOptions[3],
+          ' da ',
+        );
+        fetchGeneralData(`state=${stateOnly}&city=${removedUpperCase}`, true);
+      } else if (capitalizedPlaceOnly.includes(modifyWordsOptions[4])) {
+        const removedUpperCase = capitalizedPlaceOnly.replace(
+          modifyWordsOptions[4],
+          ' das ',
+        );
+        fetchGeneralData(`state=${stateOnly}&city=${removedUpperCase}`, true);
+      } else {
+        fetchGeneralData(
+          `state=${stateOnly}&city=${capitalizedPlaceOnly}`,
+          true,
+        );
+      }
+    } else if (lowerCaseMsg == '!todos' || lowerCaseMsg === '!all') {
+      fetchGeneralData('place_type=state', false, false);
+    } else if (stateAcronymsArray) {
+      const formattedStateMessage = msg.body.slice(1).toUpperCase();
+      fetchGeneralData(
+        `state=${formattedStateMessage}&place_type=state`,
+        false,
+        true,
+      );
+    } else if (lowerCaseMsg === '!brasil' || lowerCaseMsg === '!brazil') {
+      fetchGeneralData('place_type=state', false, false, true);
+    } else if (lowerCaseMsg === '!acre' || lowerCaseMsg === '!acré') {
+      fetchGeneralData('state=AC&place_type=state', false, true);
+    } else if (lowerCaseMsg === '!alagoas') {
+      fetchGeneralData('state=AL&place_type=state', false, true);
+    } else if (lowerCaseMsg === '!amapá' || lowerCaseMsg === '!amapa') {
+      fetchGeneralData('state=AP&place_type=state', false, true);
+    } else if (lowerCaseMsg === '!amazonas') {
+      fetchGeneralData('state=AM&place_type=state', false, true);
+    } else if (lowerCaseMsg === '!bahia') {
+      fetchGeneralData('state=BH&place_type=state', false, true);
+    } else if (lowerCaseMsg === '!ceará' || lowerCaseMsg === '!ceara') {
+      fetchGeneralData('state=CE&place_type=state', false, true);
+    } else if (
+      lowerCaseMsg === '!brasilia' ||
+      lowerCaseMsg === '!brasília' ||
+      lowerCaseMsg === '!distrito federal'
+    ) {
+      fetchGeneralData('state=DF&place_type=state', false, true);
+    } else if (
+      lowerCaseMsg === '!espírito santo' ||
+      lowerCaseMsg === '!espirito santo'
+    ) {
+      fetchGeneralData('state=ES&place_type=state', false, true);
+    } else if (lowerCaseMsg === '!goiás' || lowerCaseMsg === '!goias') {
+      fetchGeneralData('state=GO&place_type=state', false, true);
+    } else if (lowerCaseMsg === '!maranhão' || lowerCaseMsg === '!maranhao') {
+      fetchGeneralData('state=MA&place_type=state', false, true);
+    } else if (lowerCaseMsg === '!mato grosso') {
+      fetchGeneralData('state=MT&place_type=state', false, true);
+    } else if (lowerCaseMsg === '!mato grosso do sul') {
+      fetchGeneralData('state=MS&place_type=state', false, true);
+    } else if (lowerCaseMsg === '!minas gerais') {
+      fetchGeneralData('state=MG&place_type=state', false, true);
+    } else if (lowerCaseMsg === '!pará' || lowerCaseMsg === '!para') {
+      fetchGeneralData('state=PA&place_type=state', false, true);
+    } else if (lowerCaseMsg === '!paraíba' || lowerCaseMsg === '!paraiba') {
+      fetchGeneralData('state=PB&place_type=state', false, true);
+    } else if (lowerCaseMsg === '!paraná' || lowerCaseMsg === '!parana') {
+      fetchGeneralData('state=PR&place_type=state', false, true);
+    } else if (lowerCaseMsg === '!pernambuco') {
+      fetchGeneralData('state=PE&place_type=state', false, true);
+    } else if (lowerCaseMsg === '!piaui' || lowerCaseMsg === '!piauí') {
+      fetchGeneralData('state=PI&place_type=state', false, true);
+    } else if (lowerCaseMsg === '!rio de janeiro') {
+      fetchGeneralData('state=RJ&place_type=state', false, true);
+    } else if (lowerCaseMsg === '!rio grande do norte') {
+      fetchGeneralData('state=RN&place_type=state', false, true);
+    } else if (lowerCaseMsg === '!rio grande do sul') {
+      fetchGeneralData('state=RS&place_type=state', false, true);
+    } else if (lowerCaseMsg === '!rondônia' || lowerCaseMsg === '!rondonia') {
+      fetchGeneralData('state=RO&place_type=state', false, true);
+    } else if (lowerCaseMsg === '!roraima') {
+      fetchGeneralData('state=RR&place_type=state', false, true);
+    } else if (lowerCaseMsg === '!santa catarina') {
+      fetchGeneralData('state=SC&place_type=state', false, true);
+    } else if (lowerCaseMsg === '!são paulo' || lowerCaseMsg === '!sao paulo') {
+      fetchGeneralData('state=SP&place_type=state', false, true);
+    } else if (lowerCaseMsg === '!sergipe') {
+      fetchGeneralData('state=SE&place_type=state', false, true);
+    } else if (lowerCaseMsg === '!tocantins') {
+      fetchGeneralData('state=TO&place_type=state', false, true);
+    } else if (lowerCaseMsg === '!sobre' || lowerCaseMsg === '!about') {
+      msg.reply(language.aboutMessage);
+    } else if (
+      lowerCaseMsg === 'oi' ||
+      lowerCaseMsg === 'olá' ||
+      lowerCaseMsg === 'ola' ||
+      lowerCaseMsg === 'oi!' ||
+      lowerCaseMsg === 'hi' ||
+      lowerCaseMsg === '!ola' ||
+      lowerCaseMsg === '!olá'
+    ) {
+      msg.reply(language.welcomeMessage);
+    } else {
+      msg.reply(language.notFound);
     }
-  } else if (
-    lowerCaseMsg === 'oi' ||
-    lowerCaseMsg === 'olá' ||
-    lowerCaseMsg === 'ola' ||
-    lowerCaseMsg === 'oi!' ||
-    lowerCaseMsg === 'hi' ||
-    lowerCaseMsg === '!ola' ||
-    lowerCaseMsg === '!olá'
-  ) {
-    msg.reply(language.welcomeMessage);
   }
 
   let timeoutUntil = new Date();
