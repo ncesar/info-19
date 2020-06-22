@@ -352,9 +352,9 @@ const calculatePercentageData = (
     return `
     ${
       confirmedPercentage > 0
-        ? `A quantidade de *casos confirmados* 2 dias atrás *${moment(
+        ? `A quantidade de *casos confirmados* na data *${moment(
             dayBefore,
-          ).format('L')}* era: *${dayBeforeResponse.confirmed.toLocaleString(
+          ).format('L')}* era de: *${dayBeforeResponse.confirmed.toLocaleString(
             'pt-br',
           )}*. No relatório disponibilizado na data *${actualDate}* a quantidade é de: *${confirmedCases.toLocaleString(
             'pt-br',
@@ -371,9 +371,9 @@ const calculatePercentageData = (
  
   ${
     deathsPercentage > 0
-      ? `A quantidade de *mortes* 2 dias atrás *${moment(dayBefore).format(
+      ? `A quantidade de *mortes* na data *${moment(dayBefore).format(
           'L',
-        )}* era: *${dayBeforeResponse.deaths.toLocaleString(
+        )}* era de: *${dayBeforeResponse.deaths.toLocaleString(
           'pt-br',
         )}*. No relatório disponibilizado na data *${actualDate}* a quantidade é de: *${deaths.toLocaleString(
           'pt-br',
@@ -635,6 +635,8 @@ client.on('message', async (msg) => {
         '',
       );
       // shitty workaround since the api is not case-sensitive and i cant rely on the user to type exactly the capitalized city name
+      // without this, places like Cabo do Santo Agostinho will be capitalized to Cabo Do Santo Agostinho.
+      // and it will not work. This will change Do to do and it will fetch the data correctly.
       const modifyWordsOptions = [' Dos ', ' Do ', ' De ', ' Da ', ' Das '];
       if (capitalizedPlaceOnly.includes(modifyWordsOptions[0])) {
         const removedUpperCase = capitalizedPlaceOnly.replace(
