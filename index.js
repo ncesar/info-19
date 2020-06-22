@@ -622,9 +622,17 @@ client.on('message', async (msg) => {
   } else {
     if (countriesArray) {
       fetchCountryData(lowerCaseMsg.slice(1));
-    } else if (lowerCaseMsg.startsWith('!cidade')) {
+    } else if (
+      lowerCaseMsg.startsWith('!cidade') ||
+      lowerCaseMsg.startsWith('! cidade')
+    ) {
       // remover o uppercase em cada palavra e deixar so na primeira
-      const placeOnly = msg.body.slice(8);
+      let placeOnly;
+      if (lowerCaseMsg.startsWith('! cidade')) {
+        placeOnly = msg.body.slice(9);
+      } else {
+        placeOnly = msg.body.slice(8);
+      }
       const regExp = /\(([^)]+)\)/;
       const stateOnly =
         regExp.exec(placeOnly) !== null
@@ -675,7 +683,12 @@ client.on('message', async (msg) => {
         );
       }
     } else if (lowerCaseMsg.startsWith('!city')) {
-      const placeOnly = msg.body.slice(6);
+      let placeOnly;
+      if (lowerCaseMsg.startsWith('! city')) {
+        placeOnly = msg.body.slice(7);
+      } else {
+        placeOnly = msg.body.slice(6);
+      }
       const regExp = /\(([^)]+)\)/;
       const stateOnly =
         regExp.exec(placeOnly) !== null
