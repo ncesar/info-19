@@ -18,7 +18,7 @@ NodeJS and whatsapp-web.js
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-A few files were written on the rush to release this project faster(it took me 3) since COVID-19 were hurting so much brazilian ppl so feel free to suggest something.
+A few files were written on the rush to release this project faster(it took me 3 days to release the first version) since COVID-19 were hurting so much brazilian ppl so feel free to suggest something.
 
 ## License
 
