@@ -338,9 +338,14 @@ const calculatePercentageData = (
   dayBeforeResponse,
   locale,
 ) => {
+  console.log(confirmedCases, 'confirmecases');
+  console.log(dayBeforeResponse, 'daybefore');
   moment.locale(locale);
   const dayBefore = new Date(new Date().setDate(new Date().getDate() - 2));
-  if (moment(dayBefore).format('L') !== actualDate) {
+  if (
+    moment(dayBefore).format('L') !== actualDate &&
+    typeof dayBeforeResponse !== undefined
+  ) {
     const confirmedPercentage = parseFloat(
       ((confirmedCases - dayBeforeResponse.confirmed) /
         dayBeforeResponse.confirmed) *
@@ -545,13 +550,15 @@ client.on('message', async (msg) => {
           dayBefore,
         ).format('YYYY-MM-DD')}`,
       );
+      const previousData =
+        getPreviousData.data.length >= 0 ? getPreviousData.data.results[0] : '';
       if (isCityOnly) {
         msg.reply(
           sendSingleCityData(
             res.data.results[0],
             language,
             momentLocale,
-            getPreviousData.data.results[0],
+            previousData,
           ),
         );
       } else if (isStateOnly) {
@@ -560,7 +567,7 @@ client.on('message', async (msg) => {
             res.data.results[0],
             language,
             momentLocale,
-            getPreviousData.data.results[0],
+            previousData,
           ),
         );
       } else if (isBrazil) {
