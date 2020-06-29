@@ -338,8 +338,6 @@ const calculatePercentageData = (
   dayBeforeResponse,
   locale,
 ) => {
-  console.log(confirmedCases, 'confirmecases');
-  console.log(dayBeforeResponse, 'daybefore');
   moment.locale(locale);
   const dayBefore = new Date(new Date().setDate(new Date().getDate() - 2));
   if (
@@ -392,6 +390,7 @@ const calculatePercentageData = (
   }
   `;
   }
+  return '';
 };
 
 const sendSingleCityData = (response, language, locale, dayBeforeResponse) => {
