@@ -18,6 +18,9 @@ NodeJS and whatsapp-web.js
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
+**A lot of refactor is needed in this app but I did not had the time yet, very busy with others side projects and with Philips itself.**
+I may do it in a few days.
+
 A few files were written on the rush to release this project faster(it took me 3 days to release the first version) since COVID-19 were hurting so much brazilian ppl so feel free to suggest something.
 
 ## License
