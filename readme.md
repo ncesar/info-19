@@ -1,3 +1,5 @@
+Hi! The state of this code does not reflect how I code at the moment. I'm always improving my knowledge and old repos may reflect old/wrong behavior of coding.
+
 # INFO-19
 
 INFO-19 is a WhatsApp bot created to fight censorship caused by the Brazilian government in hiding total deaths by COVID-19 from the population. With this bot and using brasil.io API, I was able to fetch all the data through a simple message on WhatsApp.
