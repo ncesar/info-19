@@ -16,7 +16,7 @@
   "author": "César Nascimento - ncesar.com",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "moment": "^2.26.0",
     "qrcode-terminal": "^0.12.0",
     "whatsapp-web.js": "^1.6.1"
